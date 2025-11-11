@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Student Login / Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #f72585;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background-color: #f8f9fa;
+      color: var(--dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Navbar Styling */
+    .navbar {
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--primary) !important;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar-brand:hover {
+      color: var(--secondary) !important;
+      transform: translateY(-2px);
+    }
+    
+    .navbar-toggler {
+      border: none;
+      padding: 0.25rem 0.5rem;
+    }
+    
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+    
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2867, 97, 238, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .btn {
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-outline-primary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-outline-success {
+      border: 2px solid #28a745;
+      color: #28a745;
+    }
+    
+    .btn-outline-success:hover {
+      background-color: #28a745;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+    }
+    
+    .btn-outline-danger {
+      border: 2px solid #dc3545;
+      color: #dc3545;
+    }
+    
+    .btn-outline-danger:hover {
+      background-color: #dc3545;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      border: 2px solid var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-success {
+      background-color: #28a745;
+      border: 2px solid #28a745;
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #218838;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .main-content::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234361ee' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      animation: float 20s infinite linear;
+      z-index: -1;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      100% {
+        transform: translate(-50px, -50px) rotate(360deg);
+      }
+    }
+    
+    /* Form Cards */
+    .form-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    .form-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s ease;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease;
+    }
+    
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+    
+    .form-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .form-card h4 {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      position: relative;
+      display: inline-block;
+    }
+    
+    .form-card h4::after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 3px;
+      background: var(--accent);
+      bottom: -8px;
+      left: 0;
+      border-radius: 2px;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+      transition: all 0.3s ease;
+    }
+    
+    .form-control {
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: #f8f9fa;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+      background-color: white;
+    }
+    
+    .form-control:hover {
+      border-color: #ced4da;
+    }
+    
+    .forgot-password {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    .forgot-password:hover {
+      color: var(--secondary);
+      transform: translateX(5px);
+    }
+    
+    .submit-btn {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      background: #f1f3f5;
+      border-radius: 50px;
+      padding: 5px;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .toggle-option {
+      flex: 1;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      z-index: 1;
+    }
+    
+    .toggle-option.active {
+      color: white;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: calc(50% - 5px);
+      height: calc(100% - 10px);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+    
+    /* Role Selection */
+    .role-selection {
+      margin-bottom: 1.5rem;
+    }
+    
+    .role-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: white;
+      font-size: 1.5rem;
+    }
+    
+    .student-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+    
+    .tpc-icon {
+      background: linear-gradient(135deg, #28a745, #20c997);
+    }
+    
+    .admin-icon {
+      background: linear-gradient(135deg, #dc3545, #e83e8c);
+    }
+    
+    /* Form Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Hidden Form */
+    .hidden {
+      display: none;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 2rem 0 1.5rem;
+      margin-top: auto;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+      text-decoration: none;
+    }
+    
+    .copyright {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .form-card {
+        padding: 2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem 0;
+      }
+      
+      .form-card {
+        padding: 1.5rem;
+      }
+      
+      .form-card:hover {
+        transform: translateY(-5px);
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .form-card {
+        padding: 1.2rem;
+      }
+      
+      .form-card h4 {
+        font-size: 1.3rem;
+      }
+      
+      .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .navbar-brand {
+        font-size: 1.5rem;
+      }
+      
+      .role-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="/">College Resume Book</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav ms-auto">
+          <a class="btn btn-outline-primary me-2 mb-2 mb-lg-0" href="/login/student.html">Login (Student)</a>
+          <a class="btn btn-outline-success me-2 mb-2 mb-lg-0" href="/login/tpc.html">Login (TPC)</a>
+          <a class="btn btn-outline-danger me-2 mb-2 mb-lg-0" href="/login/admin.html">Login (Admin)</a>
+          <a class="btn btn-primary" href="/login/student.html">Register (Student)</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <div class="form-container">
+        <div class="form-card">
+          <!-- Toggle Switch -->
+          <div class="toggle-container">
+            <div class="toggle-slider" id="toggleSlider"></div>
+            <div class="toggle-option active" id="loginOption">Login</div>
+            <div class="toggle-option" id="registerOption">Register</div>
+          </div>
+          
+          <!-- Login Form -->
+          <div id="loginFormContainer">
+            <h4 class="text-center"><i class="fas fa-sign-in-alt me-2"></i>Login</h4>
+            <form id="loginForm">
+              <div class="form-group">
+                <label class="form-label" for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required>
+              </div>
+              <div class="form-group">
+                <a href="#" class="forgot-password">Forgot password?</a>
+              </div>
+              <button class="btn btn-primary submit-btn" type="submit">Login</button>
+            </form>
+          </div>
+          
+          <!-- Register Form -->
+          <div id="registerFormContainer" class="hidden">
+            <h4 class="text-center"><i class="fas fa-user-plus me-2"></i>Register</h4>
+            <form id="registerForm">
+              <!-- Role Selection -->
+              <div class="role-selection">
+                <label class="form-label">Register as</label>
+                <div class="row text-center">
+                  <div class="col-4">
+                    <div class="role-icon student-icon">
+                      <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="role" id="studentRole" value="student" checked>
+                      <label class="form-check-label" for="studentRole">Student</label>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="role-icon tpc-icon">
+                      <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="role" id="tpcRole" value="tpc">
+                      <label class="form-check-label" for="tpcRole">TPC</label>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="role-icon admin-icon">
+                      <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="role" id="adminRole" value="admin">
+                      <label class="form-check-label" for="adminRole">Admin</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="registerName">Full Name</label>
+                <input type="text" id="registerName" class="form-control" placeholder="Enter your full name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" class="form-control" placeholder="Enter your email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="registerPassword">Password</label>
+                <input type="password" id="registerPassword" class="form-control" placeholder="Create a password" required>
+              </div>
+              
+              <!-- Student-specific fields -->
+              <div id="studentFields">
+                <div class="form-group">
+                  <label class="form-label" for="registerBranch">Branch</label>
+                  <input type="text" id="registerBranch" class="form-control" placeholder="e.g., Computer Science">
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label" for="registerYear">Year</label>
+                      <input type="number" id="registerYear" class="form-control" min="1" max="5" value="1">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label" for="registerCGPA">CGPA</label>
+                      <input type="number" id="registerCGPA" class="form-control" step="0.01" min="0" max="10" value="0">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- TPC-specific fields -->
+              <div id="tpcFields" class="hidden">
+                <div class="form-group">
+                  <label class="form-label" for="registerDepartment">Department</label>
+                  <input type="text" id="registerDepartment" class="form-control" placeholder="e.g., Computer Science">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="registerPosition">Position</label>
+                  <input type="text" id="registerPosition" class="form-control" placeholder="e.g., Coordinator">
+                </div>
+              </div>
+              
+              <!-- Admin-specific fields -->
+              <div id="adminFields" class="hidden">
+                <div class="form-group">
+                  <label class="form-label" for="registerAdminCode">Admin Code</label>
+                  <input type="password" id="registerAdminCode" class="form-control" placeholder="Enter admin authorization code">
+                </div>
+              </div>
+              
+              <button class="btn btn-success submit-btn" type="submit">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="copyright">
+        © Your College — Resume Book System
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Toggle between Login and Register
+    const loginOption = document.getElementById('loginOption');
+    const registerOption = document.getElementById('registerOption');
+    const toggleSlider = document.getElementById('toggleSlider');
+    const loginFormContainer = document.getElementById('loginFormContainer');
+    const registerFormContainer = document.getElementById('registerFormContainer');
+    
+    loginOption.addEventListener('click', () => {
+      loginOption.classList.add('active');
+      registerOption.classList.remove('active');
+      toggleSlider.style.transform = 'translateX(0)';
+      loginFormContainer.classList.remove('hidden');
+      registerFormContainer.classList.add('hidden');
+    });
+    
+    registerOption.addEventListener('click', () => {
+      registerOption.classList.add('active');
+      loginOption.classList.remove('active');
+      toggleSlider.style.transform = 'translateX(100%)';
+      registerFormContainer.classList.remove('hidden');
+      loginFormContainer.classList.add('hidden');
+    });
+    
+    // Role selection logic
+    const roleRadios = document.querySelectorAll('input[name="role"]');
+    const studentFields = document.getElementById('studentFields');
+    const tpcFields = document.getElementById('tpcFields');
+    const adminFields = document.getElementById('adminFields');
+    
+    roleRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        studentFields.classList.add('hidden');
+        tpcFields.classList.add('hidden');
+        adminFields.classList.add('hidden');
+        if (radio.value === 'student') studentFields.classList.remove('hidden');
+        else if (radio.value === 'tpc') tpcFields.classList.remove('hidden');
+        else if (radio.value === 'admin') adminFields.classList.remove('hidden');
+      });
+    });
+
+  // Redirect function
+  function redirectUser(role) {
+    if(role === 'student') window.location.href = '/students/dashboard.html';
+    else if(role === 'tpc') window.location.href = '/tpc/tpcdashboard.html';
+    else if(role === 'admin') window.location.href = '/Admin/admindashboard.html';
+  }
+
+  // LOGIN
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Login failed');
+
+      // Save token for authentication
+      localStorage.setItem('token', data.token);
+      redirectUser(data.role);  // role comes from backend
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
+  // REGISTER
+  document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const role = document.querySelector('input[name="role"]:checked').value;
+
+    const payload = {
+      name: document.getElementById('registerName').value,
+      email: document.getElementById('registerEmail').value,
+      password: document.getElementById('registerPassword').value,
+      role,
+    };
+
+    // Extra fields for student
+    if (role === 'student') {
+      payload.branch = document.getElementById('registerBranch').value;
+      payload.year = document.getElementById('registerYear').value;
+      payload.cgpa = document.getElementById('registerCGPA').value;
+    }
+
+    // Extra fields for TPC
+    if (role === 'tpc') {
+      payload.department = document.getElementById('registerDepartment').value;
+      payload.position = document.getElementById('registerPosition').value;
+    }
+
+    // Extra fields for Admin
+    if (role === 'admin') {
+      payload.adminCode = document.getElementById('registerAdminCode').value;
+    }
+
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Registration failed');
+
+      localStorage.setItem('token', data.token);
+      redirectUser(role);
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+  </script>
+</body>
+</html>

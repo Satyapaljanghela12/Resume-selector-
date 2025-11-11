@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>College Resume Book</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #f72585;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background-color: #f8f9fa;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+    
+    /* Navbar Styling */
+    .navbar {
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--primary) !important;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar-brand:hover {
+      color: var(--secondary) !important;
+      transform: translateY(-2px);
+    }
+    
+    .navbar-toggler {
+      border: none;
+      padding: 0.25rem 0.5rem;
+    }
+    
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+    
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2867, 97, 238, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .btn {
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-outline-primary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-outline-success {
+      border: 2px solid #28a745;
+      color: #28a745;
+    }
+    
+    .btn-outline-success:hover {
+      background-color: #28a745;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+    }
+    
+    .btn-outline-danger {
+      border: 2px solid #dc3545;
+      color: #dc3545;
+    }
+    
+    .btn-outline-danger:hover {
+      background-color: #dc3545;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      border: 2px solid var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    /* Hero Section */
+    .hero-section {
+      background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+      color: white;
+      padding: 5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      animation: float 20s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      100% {
+        transform: translate(-50px, -50px) rotate(360deg);
+      }
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 1s ease;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    
+    .hero-btn {
+      animation: fadeInUp 1s ease 0.4s both;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Features Section */
+    .features-section {
+      padding: 5rem 0;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+      font-weight: 700;
+      color: var(--primary);
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background: var(--accent);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    
+    .feature-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      height: 100%;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: white;
+      font-size: 2rem;
+    }
+    
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    
+    .feature-text {
+      color: #6c757d;
+    }
+    
+    /* How it Works Section */
+    .how-it-works {
+      background: white;
+      padding: 5rem 0;
+      border-radius: 20px 20px 0 0;
+      margin-top: -50px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .steps-container {
+      position: relative;
+    }
+    
+    .steps-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+      opacity: 0.2;
+      border-radius: 2px;
+    }
+    
+    .step {
+      display: flex;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    
+    .step:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    
+    .step-content {
+      flex: 1;
+      padding: 2rem;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .step-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.5rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+    
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #3a0ca3 0%, #4361ee 100%);
+      color: white;
+      padding: 5rem 0;
+      text-align: center;
+    }
+    
+    .cta-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cta-text {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    
+    .cta-buttons .btn {
+      margin: 0 0.5rem 1rem;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 0 2rem;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+      text-decoration: none;
+    }
+    
+    .copyright {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+    }
+    
+    /* Login Cards */
+    .login-cards {
+      padding: 5rem 0;
+    }
+    
+    .login-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      text-align: center;
+      height: 100%;
+      border-top: 5px solid var(--primary);
+    }
+    
+    .login-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .login-card.student {
+      border-top-color: var(--primary);
+    }
+    
+    .login-card.tpc {
+      border-top-color: #28a745;
+    }
+    
+    .login-card.admin {
+      border-top-color: #dc3545;
+    }
+    
+    .login-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: white;
+      font-size: 2rem;
+    }
+    
+    .login-icon.student {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+    
+    .login-icon.tpc {
+      background: linear-gradient(135deg, #28a745, #20c997);
+    }
+    
+    .login-icon.admin {
+      background: linear-gradient(135deg, #dc3545, #e83e8c);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 1200px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+    }
+    
+    @media (max-width: 992px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .step-content {
+        padding: 1.5rem;
+      }
+      
+      .cta-title {
+        font-size: 2rem;
+      }
+      
+      .navbar-collapse {
+        margin-top: 1rem;
+      }
+      
+      .navbar-nav .btn {
+        margin: 0.25rem 0;
+        width: 100%;
+        text-align: center;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .hero-section {
+        padding: 4rem 0;
+      }
+      
+      .features-section, .how-it-works, .cta-section {
+        padding: 3rem 0;
+      }
+      
+      .steps-container::before {
+        display: none;
+      }
+      
+      .step {
+        flex-direction: column !important;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      
+      .step-number {
+        position: relative;
+        margin: 0 auto 1rem;
+        transform: none;
+        left: auto;
+        top: auto;
+      }
+      
+      .step-content {
+        margin-bottom: 1rem;
+      }
+      
+      .cta-title {
+        font-size: 1.8rem;
+      }
+      
+      .cta-text {
+        font-size: 1rem;
+      }
+      
+      .footer-links {
+        flex-wrap: wrap;
+      }
+      
+      .footer-links a {
+        margin: 0.5rem;
+      }
+      
+      .feature-card, .login-card {
+        padding: 1.5rem;
+      }
+      
+      .feature-icon, .login-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 1.7rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .hero-title {
+        font-size: 1.8rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+      
+      .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .navbar-brand {
+        font-size: 1.5rem;
+      }
+      
+      .feature-card, .login-card {
+        padding: 1.2rem;
+      }
+      
+      .feature-icon, .login-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .feature-title, .login-card h3 {
+        font-size: 1.2rem;
+      }
+      
+      .step-content {
+        padding: 1.2rem;
+      }
+      
+      .cta-title {
+        font-size: 1.5rem;
+      }
+      
+      .cta-buttons .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .hero-title {
+        font-size: 1.5rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 0.9rem;
+      }
+      
+      .navbar-brand {
+        font-size: 1.3rem;
+      }
+      
+      .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+      }
+      
+      .feature-card, .login-card {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">College Resume Book</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav ms-auto">
+          <a class="btn btn-outline-primary me-2 mb-2 mb-lg-0" href="/login/student.html">Login (Student)</a>
+          <a class="btn btn-outline-success me-2 mb-2 mb-lg-0" href="/login/tpc.html">Login (TPC)</a>
+          <a class="btn btn-outline-danger me-2 mb-2 mb-lg-0" href="/login/admin.html">Login (Admin)</a>
+          <a class="btn btn-primary" href="/login/student.html">Register (Student)</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content text-center">
+        <h1 class="hero-title">Resume Book System</h1>
+        <p class="hero-subtitle">Centralized platform for students to showcase their talents and for TPC to discover the perfect candidates.</p>
+        <a class="btn btn-light hero-btn" href="/login/student.html">Get Started <i class="fas fa-arrow-right ms-2"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <h2 class="section-title">Why Choose Our Platform</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-user-graduate"></i>
+            </div>
+            <h3 class="feature-title">Student Profiles</h3>
+            <p class="feature-text">Create comprehensive profiles showcasing your skills, education, and experience to stand out to recruiters.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3 class="feature-title">Smart Search</h3>
+            <p class="feature-text">TPC can filter and search candidates by skills, branch, academic year, and CGPA to find the perfect match.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="feature-title">Analytics Dashboard</h3>
+            <p class="feature-text">Admin can monitor system usage, view statistics, and manage users with our comprehensive dashboard.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-content">
+            <h3 class="step-title">Student Registration</h3>
+            <p>Students register with their academic details and create a comprehensive profile highlighting their skills and achievements.</p>
+          </div>
+          <div class="step-number">1</div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <h3 class="step-title">Upload Resume</h3>
+            <p>Students upload their resumes in PDF format, making them available for TPC members to review and shortlist.</p>
+          </div>
+          <div class="step-number">2</div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <h3 class="step-title">Search & Filter</h3>
+            <p>TPC members can search and filter students based on skills, branch, year, CGPA, and other criteria to find ideal candidates.</p>
+          </div>
+          <div class="step-number">3</div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <h3 class="step-title">Shortlist Candidates</h3>
+            <p>TPC can shortlist candidates, view their complete profiles, and contact them for further recruitment processes.</p>
+          </div>
+          <div class="step-number">4</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Options Section -->
+  <section class="login-cards">
+    <div class="container">
+      <h2 class="section-title">Access Your Account</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="login-card student">
+            <div class="login-icon student">
+              <i class="fas fa-user-graduate"></i>
+            </div>
+            <h3>Student Login</h3>
+            <p class="mb-3">Access your student dashboard to update your profile and upload resumes.</p>
+            <a href="/login/student.html" class="btn btn-primary">Student Login</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="login-card tpc">
+            <div class="login-icon tpc">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <h3>TPC Login</h3>
+            <p class="mb-3">Access the TPC portal to search and filter student profiles.</p>
+            <a href="/login/tpc.html" class="btn btn-success">TPC Login</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="login-card admin">
+            <div class="login-icon admin">
+              <i class="fas fa-user-shield"></i>
+            </div>
+            <h3>Admin Login</h3>
+            <p class="mb-3">Access the admin panel to manage users and view system statistics.</p>
+            <a href="/login/admin.html" class="btn btn-danger">Admin Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title">Ready to Get Started?</h2>
+      <p class="cta-text">Join hundreds of students and recruiters using our platform to connect talent with opportunity.</p>
+      <div class="cta-buttons">
+        <a class="btn btn-light" href="/login/student.html">Student Portal</a>
+        <a class="btn btn-outline-light" href="/login/tpc.html">TPC Portal</a>
+        <a class="btn btn-outline-light" href="/login/admin.html">Admin Portal</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="copyright">
+        © Your College — Resume Book System
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

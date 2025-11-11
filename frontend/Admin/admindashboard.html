@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #f72585;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #28a745;
+      --success-dark: #218838;
+      --danger: #dc3545;
+      --danger-dark: #c82333;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background-color: #f8f9fa;
+      color: var(--dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    .navbar {
+      padding: 1rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--primary) !important;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+    .main-content {
+      padding: 2rem 0;
+    }
+    .dashboard-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      cursor: pointer;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    .dashboard-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      margin: 0 auto 1.5rem;
+    }
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      flex: 1;
+      min-width: 150px;
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
+    }
+    .stat-label {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#"><i class="fas fa-crown me-2"></i>Admin Dashboard</a>
+      <div class="user-info">
+        <span class="user-name">Welcome, <span id="adminName">Admin</span></span>
+        <div class="user-avatar" id="userAvatar">A</div>
+        <button id="logout" class="btn btn-outline-secondary">
+          <i class="fas fa-sign-out-alt me-2"></i>Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h1 class="fw-bold">Admin Dashboard</h1>
+        <p class="text-muted">Manage students, TPC members, and system settings</p>
+      </div>
+
+      <div id="statsContainer" class="stats-container"></div>
+
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="dashboard-card" id="manageStudentsCard">
+            <div class="dashboard-icon"><i class="fas fa-user-graduate"></i></div>
+            <h4>Manage Students</h4>
+            <p>View, edit, and manage student profiles and data</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="dashboard-card" id="manageTPCCard">
+            <div class="dashboard-icon"><i class="fas fa-users"></i></div>
+            <h4>Manage TPC Members</h4>
+            <p>Manage Training and Placement Cell members and permissions</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+(async function () {
+  const API_BASE = "http://localhost:5000/api";
+  const token = localStorage.getItem("token");
+
+  const adminNameEl = document.getElementById("adminName");
+  const userAvatarEl = document.getElementById("userAvatar");
+  const statsContainer = document.getElementById("statsContainer");
+
+  if (!adminNameEl || !userAvatarEl || !statsContainer) {
+    console.error("Required DOM elements missing: adminName/userAvatar/statsContainer");
+    return;
+  }
+
+  // 🚪 Redirect if not logged in
+  if (!token) {
+    console.warn("No token found, redirecting to login...");
+    window.location.href = "/Admin/adminlogin.html";
+    return;
+  }
+
+  // 🧠 Generate initials for avatar
+  function getInitials(name) {
+    if (!name) return "AD";
+    return name
+      .split(" ")
+      .map((n) => n[0] || "")
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  }
+
+  // ================================
+  // 🧑‍💼 Load Admin Info
+  // ================================
+  async function loadAdminInfo() {
+    try {
+      const res = await fetch(`${API_BASE}/admin/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "Failed to load admin info");
+
+      adminNameEl.textContent = data.name || data.username || "Admin";
+      userAvatarEl.textContent = getInitials(data.name || data.username);
+    } catch (err) {
+      console.error("Admin info load error:", err);
+      adminNameEl.textContent = "Admin";
+      userAvatarEl.textContent = "AD";
+    }
+  }
+
+  // ================================
+  // 📊 Load Stats
+  // ================================
+  async function loadStats() {
+    statsContainer.innerHTML = "<div>Loading stats...</div>";
+    try {
+      const res = await fetch(`${API_BASE}/admin/stats`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("/api/admin/stats returned", res.status, data);
+        statsContainer.innerHTML = `<div class="alert alert-danger">Failed to load stats (${res.status})</div>`;
+        return;
+      }
+
+      console.log("✅ Stats fetched:", data);
+
+      const totalStudents = data.totalStudents ?? 0;
+      const activeProfiles = data.activeProfiles ?? 0;
+      const totalTPC = data.totalTPC ?? 0;
+      const averageCGPA = data.averageCGPA ?? 0;
+
+      statsContainer.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-value">${totalStudents}</div>
+          <div class="stat-label">Total Students</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${activeProfiles}</div>
+          <div class="stat-label">Active Profiles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${totalTPC}</div>
+          <div class="stat-label">TPC Members</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${averageCGPA}</div>
+          <div class="stat-label">Average CGPA</div>
+        </div>
+      `;
+    } catch (err) {
+      console.error("Stats fetch error:", err);
+      statsContainer.innerHTML = `<div class="alert alert-danger">Failed to load stats</div>`;
+    }
+  }
+
+  // ================================
+  // 🚪 Logout
+  // ================================
+  document.getElementById("logout")?.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    window.location.href = "/Admin/adminlogin.html";
+  });
+
+  // 🧭 Navigation
+  document.getElementById("manageStudentsCard")?.addEventListener("click", () => {
+    window.location.href = "/Admin/adminstudent.html";
+  });
+  document.getElementById("manageTPCCard")?.addEventListener("click", () => {
+    window.location.href = "/Admin/admintpc.html";
+  });
+
+  // ================================
+  // 🚀 Initialize
+  // ================================
+  await loadAdminInfo();
+  await loadStats();
+})();
+</script>
+
+
+
+
+</body>
+</html>
